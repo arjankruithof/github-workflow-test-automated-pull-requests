@@ -6,7 +6,7 @@ on:
   push:
     branches: [main, acceptance, test]
 jobs:
-  merge_job_to_acceptance:
+  create_PR_to_acceptance:
     runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v3
