@@ -14,7 +14,6 @@ jobs:
           with:
             fetch-depth: 0
         - name: Create Pull Request from test to acceptance
-          if: ${{ github.ref == 'refs/heads/test' }}
           uses: peter-evans/create-pull-request@v4
           with:
             token: ${{ secrets.GH_TOKEN }}
