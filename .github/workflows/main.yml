@@ -13,10 +13,17 @@ jobs:
         - uses: actions/checkout@v3
           with:
             fetch-depth: 0
-        - name: Create Pull Request from test to acceptance
+        - name: Create PR to acceptance
           if: ${{ github.base_ref == 'test' }}
           uses: devops-infra/action-pull-request@v0.4.2
           with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
            source_branch: ${{ github.head_ref }}
            target_branch: acceptance
+        - name: Create PR to main
+          if: ${{ github.base_ref == 'acceptance' }}
+          uses: devops-infra/action-pull-request@v0.4.2
+          with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           source_branch: ${{ github.head_ref }}
+           target_branch: main
