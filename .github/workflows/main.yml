@@ -16,7 +16,7 @@ jobs:
             commit-message: Auto Pull Request
             title: Your desired title
             body: Auto-created Pull Request
-            branch: ${{ github.ref }}
+            branch: ${{ github.head_ref }}
             base: acceptance
   merge_job_to_main:
     if: github.event.pull_request.merged == true
