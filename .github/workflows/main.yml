@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
         - name: Create Pull Request from test to acceptance
           uses: peter-evans/create-pull-request@v4
           with:
