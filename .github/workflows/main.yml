@@ -1,0 +1,28 @@
+# Documentation: https://github.com/devops-infra/action-pull-request
+name: Create pull request after merge
+
+on:
+  pull_request:
+    types: [closed]
+jobs:
+  create_PR_to_acceptance:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+        - name: Create PR to acceptance
+          if: ${{ github.base_ref == 'test' }}
+          uses: devops-infra/action-pull-request@v0.4.2
+          with:
+           github_token: ${{ secrets.CICD_GITHUB_TOKEN }}
+           source_branch: ${{ github.head_ref }}
+           target_branch: acceptance
+        - name: Create PR to main
+          if: ${{ github.base_ref == 'acceptance' }}
+          uses: devops-infra/action-pull-request@v0.4.2
+          with:
+           github_token: ${{ secrets.CICD_GITHUB_TOKEN }}
+           source_branch: ${{ github.head_ref }}
+           target_branch: main
