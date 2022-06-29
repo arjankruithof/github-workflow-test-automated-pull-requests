@@ -3,16 +3,18 @@
 name: Create pull request after merge
 
 on:
-  push:
-    branches: [main, acceptance, test]
+  pull_request:
+    types: [closed]
 jobs:
   create_PR_to_acceptance:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v3
           with:
             fetch-depth: 0
         - name: Create Pull Request from test to acceptance
+          if: ${{ github.ref == 'refs/heads/test' }}
           uses: peter-evans/create-pull-request@v4
           with:
             token: ${{ secrets.GH_TOKEN }}
