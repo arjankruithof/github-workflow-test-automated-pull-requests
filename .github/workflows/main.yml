@@ -1,0 +1,34 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Create pull request after merge
+
+on:
+  push:
+    branches: [main, acceptance, test]
+jobs:
+  merge_job_to_acceptance:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Create Pull Request from test to acceptance
+          uses: peter-evans/create-pull-request@v3.10.1
+          with:
+            token: ${{ secrets.GH_TOKEN }}
+            commit-message: Auto Pull Request
+            title: Your desired title
+            body: Auto-created Pull Request
+            branch: ${{ github.head_ref }}
+            base: acceptance
+  merge_job_to_main:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+        - name: Create Pull Request from acceptance to main
+          if: ${{ github.ref == 'refs/heads/acceptance' }}
+          uses: peter-evans/create-pull-request@v3.10.1
+          with:
+            token: ${{ secrets.GH_TOKEN }}
+            commit-message: Auto Pull Request
+            title: Your desired title
+            body: Auto-created Pull Request
+            branch: ${{ github.ref }}
+            base: main
